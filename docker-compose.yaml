@@ -11,6 +11,8 @@ services:
       - .env
   api:
     build: .
+    volumes:
+      - ./src:/usr/app/src
     ports:
     - 3000:3000
     env_file:
