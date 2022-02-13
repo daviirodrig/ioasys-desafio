@@ -1,4 +1,11 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Logger,
+  Post,
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
@@ -14,6 +21,7 @@ import { CreateUserUseCase } from './createUser.useCase';
 @Controller('users')
 export class CreateUserController {
   constructor(private createUserUseCase: CreateUserUseCase) {}
+  private readonly logger = new Logger(CreateUserController.name);
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -26,6 +34,7 @@ export class CreateUserController {
   public async create(
     @Body() createUserRequestBodyDTO: CreateUserRequestBodyDTO,
   ) {
+    this.logger.log('Received POST /users/');
     const user = await this.createUserUseCase.execute(createUserRequestBodyDTO);
     return instanceToInstance(user);
   }

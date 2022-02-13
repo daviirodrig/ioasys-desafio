@@ -1,5 +1,5 @@
 import { UserRepository } from '@modules/users/repository/user.repository';
-import { ConflictException, Inject, Injectable } from '@nestjs/common';
+import { ConflictException, Inject, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserRequestBodyDTO } from '@shared/dtos/user/createUserRequestBody.dto';
 import { User } from '@shared/entities/user.entity';
@@ -12,6 +12,8 @@ export class CreateUserUseCase {
     @Inject('ENCRYPT_PROVIDER') private encryption: BcryptProvider,
   ) {}
 
+  private readonly logger = new Logger(CreateUserUseCase.name);
+
   async execute({
     email,
     username,
@@ -20,6 +22,7 @@ export class CreateUserUseCase {
     const savedUser = await this.userRepo.findByEmail(email);
 
     if (savedUser) {
+      this.logger.log(`Creation failed: ${email} already exists`);
       throw new ConflictException('Email already exists');
     }
 
@@ -30,6 +33,8 @@ export class CreateUserUseCase {
       email: email,
       passwordHash: hashedPass,
     });
+
+    this.logger.log(`Creation success: ${email}`);
 
     return user;
   }
