@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiConflictResponse,
   ApiCreatedResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -30,6 +31,9 @@ export class CreateUserController {
   })
   @ApiBadRequestResponse({
     description: 'Returned on validation error',
+  })
+  @ApiConflictResponse({
+    description: 'Returned when user already exists',
   })
   public async create(
     @Body() createUserRequestBodyDTO: CreateUserRequestBodyDTO,
