@@ -1,4 +1,5 @@
 import { CreateUserDTO } from '@shared/dtos/user/createUser.dto';
+import { UpdateUserDTO } from '@shared/dtos/user/updateUser.dto';
 import { User } from '@shared/entities/user.entity';
 import { EntityRepository, Repository } from 'typeorm';
 
@@ -13,6 +14,10 @@ export class UserRepository extends Repository<User> {
     const user = this.create(createUserDTO);
 
     return this.save(user);
+  }
+
+  async updateUser(id: string, updateUserDTO: UpdateUserDTO): Promise<User> {
+    return this.save({ id: id, ...updateUserDTO });
   }
 
   async findById(id: string): Promise<User | undefined> {
