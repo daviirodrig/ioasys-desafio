@@ -20,6 +20,12 @@ export class UserRepository extends Repository<User> {
     return this.save({ id: id, ...updateUserDTO });
   }
 
+  async deleteUser(id: string): Promise<User> {
+    const user = await this.findById(id);
+
+    return this.softRemove(user);
+  }
+
   async findById(id: string): Promise<User | undefined> {
     return this.findOne(id);
   }
