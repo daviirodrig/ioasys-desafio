@@ -8,6 +8,8 @@ import { UpdateUserController } from './context/updateUser/updateUser.controller
 import { UpdateUserUseCase } from './context/updateUser/updateUser.useCase';
 import { DeleteUserUseCase } from './context/deleteUser/deleteUser.useCase';
 import { DeleteUserController } from './context/deleteUser/deleteUser.controller';
+import { GetUserController } from './context/getUser/getUser.controller';
+import { GetUserUseCase } from './context/getUser/getUser.useCase';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserRepository]), BcryptProvider],
@@ -16,11 +18,13 @@ import { DeleteUserController } from './context/deleteUser/deleteUser.controller
     CreateUserUseCase,
     UpdateUserUseCase,
     DeleteUserUseCase,
+    GetUserUseCase,
   ],
   controllers: [
     CreateUserController,
     UpdateUserController,
     DeleteUserController,
+    GetUserController,
   ],
 })
 export class UsersModule {}
