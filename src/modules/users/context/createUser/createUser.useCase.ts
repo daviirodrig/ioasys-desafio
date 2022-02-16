@@ -16,7 +16,7 @@ export class CreateUserUseCase {
 
   async execute({
     email,
-    username,
+    displayName,
     password,
   }: CreateUserRequestBodyDTO): Promise<User> {
     const savedUser = await this.userRepo.findByEmail(email);
@@ -29,7 +29,7 @@ export class CreateUserUseCase {
     const hashedPass = this.encryption.createHash(password);
 
     const user = await this.userRepo.createUser({
-      username: username,
+      displayName: displayName,
       email: email,
       passwordHash: hashedPass,
     });

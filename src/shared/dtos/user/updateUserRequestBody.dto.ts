@@ -10,7 +10,7 @@ export class UpdateUserRequestBodyDTO {
   @ApiPropertyOptional()
   @IsString()
   @IsOptional()
-  username: string;
+  displayName: string;
 
   @ApiPropertyOptional()
   @IsString()

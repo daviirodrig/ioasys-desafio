@@ -10,7 +10,7 @@ export class CreateUserRequestBodyDTO {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  username: string;
+  displayName: string;
 
   @ApiProperty()
   @IsString()

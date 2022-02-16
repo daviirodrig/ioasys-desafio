@@ -15,7 +15,7 @@ export class UpdateUserUseCase {
 
   async execute(
     id: string,
-    { email, username, password }: UpdateUserRequestBodyDTO,
+    { email, displayName, password }: UpdateUserRequestBodyDTO,
   ): Promise<User> {
     const savedUser = await this.userRepo.findById(id);
 
@@ -27,7 +27,7 @@ export class UpdateUserUseCase {
       const passwordHash = this.encryption.createHash(password);
       await this.userRepo.updateUser(id, {
         email,
-        username,
+        displayName,
         passwordHash,
       });
       const updatedUser = await this.userRepo.findById(id);
@@ -35,7 +35,7 @@ export class UpdateUserUseCase {
     } else {
       await this.userRepo.updateUser(id, {
         email,
-        username,
+        displayName,
       });
       const updatedUser = await this.userRepo.findById(id);
       return updatedUser;

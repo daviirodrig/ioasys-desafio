@@ -11,15 +11,15 @@ import {
 } from 'typeorm';
 
 @Entity('users')
-@Unique(['email', 'username'])
+@Unique(['email'])
 export class User {
   @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @ApiProperty()
-  @Column()
-  username: string;
+  @Column({ name: 'display_name' })
+  displayName: string;
 
   @ApiProperty()
   @Column()
