@@ -9,6 +9,7 @@ async function bootstrap() {
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Ioasys api')
+    .addBearerAuth()
     .setVersion('1')
     .build();
   const swaggerDoc = SwaggerModule.createDocument(app, swaggerConfig);

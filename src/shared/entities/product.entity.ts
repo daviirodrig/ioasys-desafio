@@ -31,6 +31,14 @@ export class Product {
   @Column()
   description: string;
 
+  @ApiProperty()
+  @Column()
+  price: number;
+
+  @ApiProperty()
+  @Column()
+  storage: number;
+
   @CreateDateColumn({ name: 'created_at' })
   @Exclude()
   createdAt: Date;
