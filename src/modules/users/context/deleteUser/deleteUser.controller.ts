@@ -8,9 +8,10 @@ import {
   Param,
   UseGuards,
   Request,
-  UnauthorizedException,
+  ForbiddenException,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiTags,
@@ -27,13 +28,14 @@ export class DeleteUserController {
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiBearerAuth()
   @ApiUnauthorizedResponse({ description: 'Token not authorized' })
   @ApiNoContentResponse({ description: 'Deleted successfully' })
   @ApiNotFoundResponse({ description: 'User not found' })
   async delete(@Param('id') id: string, @Request() req) {
     this.logger.log('Received DELETE /users/');
     if (req.user.id != id) {
-      throw new UnauthorizedException();
+      throw new ForbiddenException();
     } else {
       this.deleteUserUseCase.execute(id);
     }

@@ -2,16 +2,17 @@ import { JwtAuthGuard } from '@modules/auth/jwt.guard';
 import {
   Body,
   Controller,
+  ForbiddenException,
   HttpCode,
   HttpStatus,
   Logger,
   Param,
   Patch,
   Request,
-  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
@@ -30,6 +31,7 @@ export class UpdateUserController {
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
+  @ApiBearerAuth()
   @ApiUnauthorizedResponse({ description: 'Token not authorized' })
   @ApiOkResponse({
     description: 'Successfully updated',
@@ -45,7 +47,7 @@ export class UpdateUserController {
     this.logger.log('Received PATCH /users/');
 
     if (req.user.id != id) {
-      throw new UnauthorizedException();
+      throw new ForbiddenException();
     }
 
     const user = await this.updateUserUseCase.execute(
