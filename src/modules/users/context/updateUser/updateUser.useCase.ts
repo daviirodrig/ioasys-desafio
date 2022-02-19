@@ -21,24 +21,30 @@ export class UpdateUserUseCase {
 
     if (!savedUser) {
       this.logger.log(`Update failed: ${id} does not exists`);
-      throw new NotFoundException('id does not exists');
+      throw new NotFoundException(`Update failed: ${id} does not exists`);
     }
+
     if (password) {
       const passwordHash = this.encryption.createHash(password);
+
       await this.userRepo.updateUser(id, {
         email,
         displayName,
         passwordHash,
       });
+
       const updatedUser = await this.userRepo.findById(id);
-      return updatedUser;
-    } else {
-      await this.userRepo.updateUser(id, {
-        email,
-        displayName,
-      });
-      const updatedUser = await this.userRepo.findById(id);
+
       return updatedUser;
     }
+
+    await this.userRepo.updateUser(id, {
+      email,
+      displayName,
+    });
+
+    const updatedUser = await this.userRepo.findById(id);
+
+    return updatedUser;
   }
 }

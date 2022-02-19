@@ -22,7 +22,9 @@ export class GetUserController {
   @ApiNotFoundResponse({ description: 'User not found' })
   async get(@Param('id') id: string) {
     this.logger.log('Received GET /users/');
-    const user = this.getUserUseCase.execute(id);
+
+    const user = await this.getUserUseCase.execute(id);
+
     return instanceToInstance(user);
   }
 }

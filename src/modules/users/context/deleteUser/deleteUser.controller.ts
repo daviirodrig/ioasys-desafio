@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiTags,
@@ -29,15 +30,18 @@ export class DeleteUserController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBearerAuth()
-  @ApiUnauthorizedResponse({ description: 'Token not authorized' })
+  @ApiUnauthorizedResponse({ description: 'Token invalid or not found' })
+  @ApiForbiddenResponse({ description: 'Token not authorized' })
   @ApiNoContentResponse({ description: 'Deleted successfully' })
   @ApiNotFoundResponse({ description: 'User not found' })
   async delete(@Param('id') id: string, @Request() req) {
     this.logger.log('Received DELETE /users/');
+
     if (req.user.id != id) {
-      throw new ForbiddenException();
-    } else {
-      this.deleteUserUseCase.execute(id);
+      this.logger.log('Delete failed: token user does not match');
+      throw new ForbiddenException('Delete failed: token user does not match');
     }
+
+    await this.deleteUserUseCase.execute(id);
   }
 }

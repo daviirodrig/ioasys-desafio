@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
@@ -32,12 +33,13 @@ export class UpdateUserController {
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth()
-  @ApiUnauthorizedResponse({ description: 'Token not authorized' })
+  @ApiUnauthorizedResponse({ description: 'Token invalid or not found' })
+  @ApiForbiddenResponse({ description: 'Token not authorized' })
   @ApiOkResponse({
     description: 'Successfully updated',
   })
   @ApiNotFoundResponse({
-    description: 'User with id not found',
+    description: 'User not found',
   })
   async update(
     @Param('id') id: string,
@@ -47,7 +49,8 @@ export class UpdateUserController {
     this.logger.log('Received PATCH /users/');
 
     if (req.user.id != id) {
-      throw new ForbiddenException();
+      this.logger.log('Update failed: token user does not match');
+      throw new ForbiddenException('Update failed: token user does not match');
     }
 
     const user = await this.updateUserUseCase.execute(

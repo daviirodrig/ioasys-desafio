@@ -28,18 +28,21 @@ export class CreateUserController {
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({
     type: User,
+    description: 'User createed sucessfully',
   })
   @ApiBadRequestResponse({
-    description: 'Returned on validation error',
+    description: 'Validation error',
   })
   @ApiConflictResponse({
-    description: 'Returned when user already exists',
+    description: 'User already exists',
   })
   public async create(
     @Body() createUserRequestBodyDTO: CreateUserRequestBodyDTO,
   ) {
     this.logger.log('Received POST /users/');
+
     const user = await this.createUserUseCase.execute(createUserRequestBodyDTO);
+
     return instanceToInstance(user);
   }
 }

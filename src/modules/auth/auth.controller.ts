@@ -1,8 +1,8 @@
 import {
-  Body,
   Controller,
   HttpCode,
   HttpStatus,
+  Logger,
   Post,
   Request,
   UseGuards,
@@ -21,14 +21,17 @@ import { AuthService } from './auth.service';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
+  private readonly logger = new Logger(AuthController.name);
 
   @UseGuards(AuthGuard('local'))
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ description: 'Token issued sucessfully' })
-  @ApiUnauthorizedResponse({ description: 'Token not authorized' })
+  @ApiUnauthorizedResponse({ description: 'Invalid credentials' })
   @ApiBody({ type: LoginRequestDTO })
   async login(@Request() req) {
+    this.logger.log('Received POST /auth/login');
+
     return this.authService.login(req.user);
   }
 }

@@ -13,8 +13,8 @@ export class GetUserUseCase {
     const user = await this.userRepo.findById(id);
 
     if (!user) {
-      this.logger.log(`Get failed: ${id} does not exists`);
-      throw new NotFoundException('id does not exists');
+      this.logger.log(`Get user failed: ${id} does not exists`);
+      throw new NotFoundException(`Get user failed: ${id} does not exists`);
     }
 
     return user;
