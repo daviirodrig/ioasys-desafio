@@ -1,3 +1,4 @@
+require('dotenv/config');
 export default {
   nodeEnv: process.env.NODE_ENV || 'local',
   port: parseInt(process.env.PORT, 10) || 3000,
