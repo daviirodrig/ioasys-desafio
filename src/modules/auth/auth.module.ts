@@ -9,10 +9,11 @@ import { AuthService } from './auth.service';
 import { LocalStratey } from './local.strategy';
 import config from '@config/env';
 import { JwtStrategy } from './jwt.strategy';
+import { AdminRepository } from '@modules/admins/repository/admins.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserRepository]),
+    TypeOrmModule.forFeature([UserRepository, AdminRepository]),
     JwtModule.register({
       secret: config.jwtSecret,
       signOptions: { expiresIn: '1h' },

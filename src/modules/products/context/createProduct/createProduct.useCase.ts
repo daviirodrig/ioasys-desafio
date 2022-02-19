@@ -1,3 +1,4 @@
+import { AdminRepository } from '@modules/admins/repository/admins.repository';
 import { ProductRepository } from '@modules/products/repository/product.repository';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,11 +9,15 @@ import { Product } from '@shared/entities/product.entity';
 export class CreateProductUseCase {
   constructor(
     @InjectRepository(ProductRepository) private productRepo: ProductRepository,
+    @InjectRepository(AdminRepository) private adminRepo: AdminRepository,
   ) {}
 
   async execute(
+    adminId: string,
     createProductRequestBodyDTO: CreateProductRequestBodyDTO,
   ): Promise<Product> {
-    return this.productRepo.createProduct(createProductRequestBodyDTO);
+    const admin = await this.adminRepo.findOne({ id: adminId });
+
+    return this.productRepo.createProduct(admin, createProductRequestBodyDTO);
   }
 }

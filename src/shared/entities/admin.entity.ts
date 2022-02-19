@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import {
   CreateDateColumn,
@@ -14,24 +15,30 @@ import { User } from './user.entity';
 
 @Entity('admins')
 export class Admin {
+  @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @ApiProperty()
   @OneToOne(() => User)
   @JoinColumn({ name: 'user_id' })
   user: User;
 
+  @ApiProperty({ type: () => Product })
   @OneToMany(() => Product, (product) => product.admin)
   products: Product[];
 
+  @ApiProperty()
   @CreateDateColumn({ name: 'created_at' })
   @Exclude()
   createdAt: Date;
 
+  @ApiProperty()
   @UpdateDateColumn({ name: 'updated_at' })
   @Exclude()
   updatedAt: Date;
 
+  @ApiProperty()
   @DeleteDateColumn({ name: 'deleted_at' })
   @Exclude()
   deletedAt: Date;

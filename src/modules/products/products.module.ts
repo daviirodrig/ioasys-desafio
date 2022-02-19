@@ -1,3 +1,4 @@
+import { AdminRepository } from '@modules/admins/repository/admins.repository';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CreateProductController } from './context/createProduct/createProduct.controller';
@@ -7,7 +8,7 @@ import { UpdateProductUseCase } from './context/updateProduct/updateProduct.useC
 import { ProductRepository } from './repository/product.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ProductRepository])],
+  imports: [TypeOrmModule.forFeature([ProductRepository, AdminRepository])],
   providers: [CreateProductUseCase, UpdateProductUseCase],
   controllers: [CreateProductController, UpdateProductController],
 })

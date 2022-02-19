@@ -6,6 +6,7 @@ import {
   Post,
   UseGuards,
   Request,
+  ForbiddenException,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { CreateProductRequestBodyDTO } from '@shared/dtos/product/createProductRequestBody.dto';
@@ -32,7 +33,13 @@ export class CreateProductController {
     @Request() req,
   ) {
     this.logger.log('Received POST /products');
+
+    if (!req.user.isAdmin) {
+      throw new ForbiddenException();
+    }
+
     const product = await this.createProductUseCase.execute(
+      req.user.adminId,
       createProductRequestBodyDTO,
     );
 

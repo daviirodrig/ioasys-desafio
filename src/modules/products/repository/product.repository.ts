@@ -1,5 +1,8 @@
+import { AdminRepository } from '@modules/admins/repository/admins.repository';
+import { InjectRepository } from '@nestjs/typeorm';
 import { CreateProductDTO } from '@shared/dtos/product/createProduct.dto';
 import { UpdateProductDTO } from '@shared/dtos/product/updateProduct.dto';
+import { Admin } from '@shared/entities/admin.entity';
 import { Product } from '@shared/entities/product.entity';
 import { EntityRepository, Repository } from 'typeorm';
 
@@ -11,8 +14,11 @@ export class ProductRepository extends Repository<Product> {
     return product;
   }
 
-  async createProduct(createProductDTO: CreateProductDTO): Promise<Product> {
-    const product = this.create(createProductDTO);
+  async createProduct(
+    admin: Admin,
+    createProductDTO: CreateProductDTO,
+  ): Promise<Product> {
+    const product = this.create({ ...createProductDTO, admin: admin });
 
     return this.save(product);
   }

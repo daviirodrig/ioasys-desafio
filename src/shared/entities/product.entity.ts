@@ -18,7 +18,7 @@ export class Product {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: () => Admin })
   @ManyToOne(() => Admin, (admin) => admin.products)
   @JoinColumn({ name: 'admin_id' })
   admin: Admin;

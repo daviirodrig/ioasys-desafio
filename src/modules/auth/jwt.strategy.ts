@@ -2,10 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import config from '@config/env';
+import { InjectRepository } from '@nestjs/typeorm';
+import { AdminRepository } from '@modules/admins/repository/admins.repository';
+import { UserRepository } from '@modules/users/repository/user.repository';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() {
+  constructor(
+    @InjectRepository(UserRepository) private userRepo: UserRepository,
+    @InjectRepository(AdminRepository) private adminRepo: AdminRepository,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -14,6 +20,22 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload) {
-    return { id: payload.sub, email: payload.email };
+    const user = await this.userRepo.findById(payload.sub);
+    const admin = await this.adminRepo.findByUser(user);
+
+    if (admin) {
+      return {
+        id: payload.sub,
+        email: payload.email,
+        isAdmin: true,
+        adminId: admin.id,
+      };
+    }
+
+    return {
+      id: payload.sub,
+      email: payload.email,
+      isAdmin: false,
+    };
   }
 }
