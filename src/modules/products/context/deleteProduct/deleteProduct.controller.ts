@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiTags,
@@ -26,16 +27,18 @@ export class DeleteProductController {
   private readonly logger = new Logger(DeleteProductController.name);
 
   @UseGuards(JwtAuthGuard)
+  @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBearerAuth()
-  @ApiUnauthorizedResponse({ description: 'Token not authorized' })
+  @ApiUnauthorizedResponse({ description: 'Token invalid or not found' })
+  @ApiForbiddenResponse({ description: 'Token not authorized' })
   @ApiNoContentResponse({ description: 'Deleted successfully' })
   @ApiNotFoundResponse({ description: 'Product not found' })
-  @Delete(':id')
   async delete(@Param('id') id: string, @Request() req) {
     this.logger.log('Received DELETE /products');
 
     if (!req.user.isAdmin) {
+      this.logger.log('Delete product failed: not admin');
       throw new ForbiddenException();
     }
 

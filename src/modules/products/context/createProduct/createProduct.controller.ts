@@ -13,6 +13,7 @@ import {
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { CreateProductRequestBodyDTO } from '@shared/dtos/product/createProductRequestBody.dto';
 import { Product } from '@shared/entities/product.entity';
@@ -29,6 +30,7 @@ export class CreateProductController {
   @UseGuards(JwtAuthGuard)
   @Post()
   @ApiBearerAuth()
+  @ApiUnauthorizedResponse({ description: 'Token invalid or not found' })
   @ApiForbiddenResponse({ description: 'Token not authorized' })
   @ApiCreatedResponse({
     type: Product,
@@ -41,6 +43,7 @@ export class CreateProductController {
     this.logger.log('Received POST /products');
 
     if (!req.user.isAdmin) {
+      this.logger.log('Product creation failed: not admin');
       throw new ForbiddenException();
     }
 

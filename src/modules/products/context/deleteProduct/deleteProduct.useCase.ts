@@ -18,6 +18,6 @@ export class DeleteProductUseCase {
     }
 
     await this.productRepo.deleteProduct(id);
-    this.logger.log(`Soft-deleted user ${id}`);
+    this.logger.log(`Soft-deleted product ${id}`);
   }
 }

@@ -34,13 +34,13 @@ export class UpdateProductController {
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth()
-  @ApiUnauthorizedResponse({ description: 'Token not authorized' })
+  @ApiUnauthorizedResponse({ description: 'Token invalid or not found' })
   @ApiForbiddenResponse({ description: 'Token not authorized' })
   @ApiOkResponse({
     description: 'Successfully updated',
   })
   @ApiNotFoundResponse({
-    description: 'Id not found',
+    description: 'Product not found',
   })
   async update(
     @Param('id') id: string,
@@ -50,6 +50,7 @@ export class UpdateProductController {
     this.logger.log('Received PATCH /products');
 
     if (!req.user.isAdmin) {
+      this.logger.log('Update product failed: not admin');
       throw new ForbiddenException();
     }
 

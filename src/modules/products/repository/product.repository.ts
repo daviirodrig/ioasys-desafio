@@ -1,5 +1,3 @@
-import { AdminRepository } from '@modules/admins/repository/admins.repository';
-import { InjectRepository } from '@nestjs/typeorm';
 import { CreateProductDTO } from '@shared/dtos/product/createProduct.dto';
 import { UpdateProductDTO } from '@shared/dtos/product/updateProduct.dto';
 import { Admin } from '@shared/entities/admin.entity';
