@@ -1,6 +1,19 @@
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { LoginRequestDTO } from '@shared/dtos/auth/loginRequest.dto';
 import { AuthService } from './auth.service';
 
@@ -11,7 +24,11 @@ export class AuthController {
 
   @UseGuards(AuthGuard('local'))
   @Post('login')
-  async login(@Request() req, @Body() loginRequestDTO: LoginRequestDTO) {
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ description: 'Token issued sucessfully' })
+  @ApiUnauthorizedResponse({ description: 'Token not authorized' })
+  @ApiBody({ type: LoginRequestDTO })
+  async login(@Request() req) {
     return this.authService.login(req.user);
   }
 }

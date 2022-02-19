@@ -8,7 +8,12 @@ import {
   Request,
   ForbiddenException,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CreateProductRequestBodyDTO } from '@shared/dtos/product/createProductRequestBody.dto';
 import { Product } from '@shared/entities/product.entity';
 import { instanceToInstance } from 'class-transformer';
@@ -24,6 +29,7 @@ export class CreateProductController {
   @UseGuards(JwtAuthGuard)
   @Post()
   @ApiBearerAuth()
+  @ApiForbiddenResponse({ description: 'Token not authorized' })
   @ApiCreatedResponse({
     type: Product,
     description: 'Product created successfully',

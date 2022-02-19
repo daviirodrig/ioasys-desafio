@@ -7,9 +7,13 @@ import {
   Param,
   Patch,
   UseGuards,
+  Request,
+  ForbiddenException,
+  Logger,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
@@ -24,11 +28,14 @@ import { UpdateProductUseCase } from './updateProduct.useCase';
 export class UpdateProductController {
   constructor(private updateProductUseCase: UpdateProductUseCase) {}
 
+  private readonly logger = new Logger(UpdateProductController.name);
+
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({ description: 'Token not authorized' })
+  @ApiForbiddenResponse({ description: 'Token not authorized' })
   @ApiOkResponse({
     description: 'Successfully updated',
   })
@@ -38,7 +45,14 @@ export class UpdateProductController {
   async update(
     @Param('id') id: string,
     @Body() updateProductRequestBodyDTO: UpdateProductRequestBodyDTO,
+    @Request() req,
   ) {
+    this.logger.log('Received POST /products');
+
+    if (!req.user.isAdmin) {
+      throw new ForbiddenException();
+    }
+
     const product = await this.updateProductUseCase.execute(
       id,
       updateProductRequestBodyDTO,
