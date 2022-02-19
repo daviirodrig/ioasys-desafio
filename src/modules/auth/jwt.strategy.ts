@@ -23,6 +23,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const user = await this.userRepo.findById(payload.sub);
     const admin = await this.adminRepo.findByUser(user);
 
+    if (!user) {
+      // User deleted account and jwt didn't expire
+      return null;
+    }
+
     if (admin) {
       return {
         id: payload.sub,
