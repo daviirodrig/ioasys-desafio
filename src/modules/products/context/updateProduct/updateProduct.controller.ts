@@ -47,7 +47,7 @@ export class UpdateProductController {
     @Body() updateProductRequestBodyDTO: UpdateProductRequestBodyDTO,
     @Request() req,
   ) {
-    this.logger.log('Received POST /products');
+    this.logger.log('Received PATCH /products');
 
     if (!req.user.isAdmin) {
       throw new ForbiddenException();
