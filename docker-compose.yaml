@@ -15,5 +15,6 @@ services:
       - ./src:/usr/app/src
     ports:
     - 3000:3000
+    - 9229:9229
     env_file:
       - .env
