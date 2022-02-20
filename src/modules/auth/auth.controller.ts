@@ -5,6 +5,7 @@ import {
   Logger,
   Post,
   Request,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -15,6 +16,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { LoginRequestDTO } from '@shared/dtos/auth/loginRequest.dto';
+import { Response } from 'express';
 import { AuthService } from './auth.service';
 
 @ApiTags('Auth')
@@ -26,12 +28,19 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'Token issued sucessfully' })
+  @ApiOkResponse({ description: 'Token issued sucessfully (Http-only cookie)' })
   @ApiUnauthorizedResponse({ description: 'Invalid credentials' })
   @ApiBody({ type: LoginRequestDTO })
-  async login(@Request() req) {
+  async login(@Request() req, @Res() res: Response) {
     this.logger.log('Received POST /auth/login');
 
-    return this.authService.login(req.user);
+    const token = await this.authService.login(req.user);
+
+    res
+      .cookie('access_token', token, {
+        httpOnly: true,
+        expires: new Date(Date.now() + 3600000), // 1 hour
+      })
+      .send({ success: true });
   }
 }

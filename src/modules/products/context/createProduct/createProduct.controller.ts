@@ -9,7 +9,7 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import {
-  ApiBearerAuth,
+  ApiCookieAuth,
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiTags,
@@ -29,7 +29,7 @@ export class CreateProductController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  @ApiBearerAuth()
+  @ApiCookieAuth()
   @ApiUnauthorizedResponse({ description: 'Token invalid or not found' })
   @ApiForbiddenResponse({ description: 'Token not authorized' })
   @ApiCreatedResponse({

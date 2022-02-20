@@ -11,11 +11,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
-  ApiBearerAuth,
+  ApiCookieAuth,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
-  ApiParam,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -32,7 +31,7 @@ export class GetProductController {
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  @ApiBearerAuth()
+  @ApiCookieAuth()
   @ApiOkResponse({ description: 'Success', type: Product })
   @ApiUnauthorizedResponse({ description: 'Token invalid or not found' })
   @ApiForbiddenResponse({ description: 'Token not authorized' })
@@ -51,7 +50,7 @@ export class GetProductController {
   @UseGuards(JwtAuthGuard)
   @Get()
   @HttpCode(HttpStatus.OK)
-  @ApiBearerAuth()
+  @ApiCookieAuth()
   @ApiOkResponse({ description: 'Success', type: Product })
   @ApiUnauthorizedResponse({ description: 'Token invalid or not found' })
   @ApiForbiddenResponse({ description: 'Token not authorized' })

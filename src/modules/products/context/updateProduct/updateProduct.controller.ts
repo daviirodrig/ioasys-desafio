@@ -12,7 +12,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import {
-  ApiBearerAuth,
+  ApiCookieAuth,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -33,7 +33,7 @@ export class UpdateProductController {
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
-  @ApiBearerAuth()
+  @ApiCookieAuth()
   @ApiUnauthorizedResponse({ description: 'Token invalid or not found' })
   @ApiForbiddenResponse({ description: 'Token not authorized' })
   @ApiOkResponse({

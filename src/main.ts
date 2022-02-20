@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
 import config from '@config/env';
 
 async function bootstrap() {
@@ -9,7 +10,7 @@ async function bootstrap() {
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Ioasys api')
-    .addBearerAuth()
+    .addCookieAuth('access_token')
     .setVersion('1')
     .build();
   const swaggerDoc = SwaggerModule.createDocument(app, swaggerConfig);
@@ -18,6 +19,7 @@ async function bootstrap() {
   const logger = new Logger('Nest API');
 
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
+  app.use(cookieParser());
 
   await app.listen(config.port, () =>
     logger.log(`API started on ${config.port}`),
