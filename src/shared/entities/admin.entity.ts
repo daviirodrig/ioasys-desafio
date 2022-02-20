@@ -28,17 +28,14 @@ export class Admin {
   @OneToMany(() => Product, (product) => product.admin)
   products: Product[];
 
-  @ApiProperty()
   @CreateDateColumn({ name: 'created_at' })
   @Exclude()
   createdAt: Date;
 
-  @ApiProperty()
   @UpdateDateColumn({ name: 'updated_at' })
   @Exclude()
   updatedAt: Date;
 
-  @ApiProperty()
   @DeleteDateColumn({ name: 'deleted_at' })
   @Exclude()
   deletedAt: Date;
