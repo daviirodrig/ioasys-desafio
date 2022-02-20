@@ -19,7 +19,7 @@ export class Product {
   id: string;
 
   @ApiProperty({ type: () => Admin })
-  @ManyToOne(() => Admin, (admin) => admin.products)
+  @ManyToOne(() => Admin)
   @JoinColumn({ name: 'admin_id' })
   admin: Admin;
 

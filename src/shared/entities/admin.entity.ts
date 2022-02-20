@@ -5,12 +5,10 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
-  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Product } from './product.entity';
 import { User } from './user.entity';
 
 @Entity('admins')
@@ -23,10 +21,6 @@ export class Admin {
   @OneToOne(() => User)
   @JoinColumn({ name: 'user_id' })
   user: User;
-
-  @ApiProperty({ type: () => Product })
-  @OneToMany(() => Product, (product) => product.admin)
-  products: Product[];
 
   @CreateDateColumn({ name: 'created_at' })
   @Exclude()
