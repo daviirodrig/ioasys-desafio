@@ -33,4 +33,8 @@ export class ProductRepository extends Repository<Product> {
 
     return this.softRemove(product);
   }
+
+  async decreaseStorage(product: Product): Promise<void> {
+    await this.update(product.id, { storage: product.storage - 1 });
+  }
 }
