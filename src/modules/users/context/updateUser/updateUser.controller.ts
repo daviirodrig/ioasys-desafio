@@ -1,4 +1,3 @@
-import { JwtAuthGuard } from '@modules/auth/jwt.guard';
 import {
   Body,
   Controller,
@@ -9,16 +8,9 @@ import {
   Param,
   Patch,
   Request,
-  UseGuards,
 } from '@nestjs/common';
-import {
-  ApiCookieAuth,
-  ApiForbiddenResponse,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiTags,
-  ApiUnauthorizedResponse,
-} from '@nestjs/swagger';
+import { ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { UseAuth } from '@shared/decorators/auth.decorator';
 import { UpdateUserRequestBodyDTO } from '@shared/dtos/user/updateUserRequestBody.dto';
 import { instanceToInstance } from 'class-transformer';
 import { UpdateUserUseCase } from './updateUser.useCase';
@@ -29,12 +21,9 @@ export class UpdateUserController {
   constructor(private updateUserUseCase: UpdateUserUseCase) {}
   private readonly logger = new Logger(UpdateUserController.name);
 
-  @UseGuards(JwtAuthGuard)
   @Patch(':id')
+  @UseAuth()
   @HttpCode(HttpStatus.OK)
-  @ApiCookieAuth()
-  @ApiUnauthorizedResponse({ description: 'Token invalid or not found' })
-  @ApiForbiddenResponse({ description: 'Token not authorized' })
   @ApiOkResponse({
     description: 'Successfully updated',
   })

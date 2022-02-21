@@ -1,12 +1,6 @@
-import { JwtAuthGuard } from '@modules/auth/jwt.guard';
-import { Body, Controller, Post, UseGuards, Request } from '@nestjs/common';
-import {
-  ApiCookieAuth,
-  ApiUnauthorizedResponse,
-  ApiForbiddenResponse,
-  ApiCreatedResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { Body, Controller, Post, Request } from '@nestjs/common';
+import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { UseAuth } from '@shared/decorators/auth.decorator';
 import { CreateOrderRequestBodyDTO } from '@shared/dtos/order/createOrderRequestBody.dto';
 import { Order } from '@shared/entities/order.entity';
 import { instanceToInstance } from 'class-transformer';
@@ -17,11 +11,8 @@ import { CreateOrderUseCase } from './createOrder.useCase';
 export class CreateOrderController {
   constructor(private createOrderUseCase: CreateOrderUseCase) {}
 
-  @UseGuards(JwtAuthGuard)
   @Post()
-  @ApiCookieAuth()
-  @ApiUnauthorizedResponse({ description: 'Token invalid or not found' })
-  @ApiForbiddenResponse({ description: 'Token not authorized' })
+  @UseAuth()
   @ApiCreatedResponse({
     type: Order,
     description: 'Order created successfully',

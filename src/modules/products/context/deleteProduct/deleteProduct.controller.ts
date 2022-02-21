@@ -1,4 +1,3 @@
-import { JwtAuthGuard } from '@modules/auth/jwt.guard';
 import {
   Controller,
   Delete,
@@ -8,16 +7,13 @@ import {
   Logger,
   Param,
   Request,
-  UseGuards,
 } from '@nestjs/common';
 import {
-  ApiCookieAuth,
-  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiTags,
-  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { UseAuth } from '@shared/decorators/auth.decorator';
 import { DeleteProductUseCase } from './deleteProduct.useCase';
 
 @ApiTags('Products')
@@ -26,12 +22,9 @@ export class DeleteProductController {
   constructor(private deleteProductUseCase: DeleteProductUseCase) {}
   private readonly logger = new Logger(DeleteProductController.name);
 
-  @UseGuards(JwtAuthGuard)
   @Delete(':id')
+  @UseAuth()
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiCookieAuth()
-  @ApiUnauthorizedResponse({ description: 'Token invalid or not found' })
-  @ApiForbiddenResponse({ description: 'Token not authorized' })
   @ApiNoContentResponse({ description: 'Deleted successfully' })
   @ApiNotFoundResponse({ description: 'Product not found' })
   async delete(@Param('id') id: string, @Request() req) {

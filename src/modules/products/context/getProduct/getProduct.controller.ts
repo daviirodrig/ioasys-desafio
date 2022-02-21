@@ -1,4 +1,3 @@
-import { JwtAuthGuard } from '@modules/auth/jwt.guard';
 import {
   Controller,
   ForbiddenException,
@@ -8,16 +7,9 @@ import {
   Logger,
   Param,
   Request,
-  UseGuards,
 } from '@nestjs/common';
-import {
-  ApiCookieAuth,
-  ApiForbiddenResponse,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiTags,
-  ApiUnauthorizedResponse,
-} from '@nestjs/swagger';
+import { ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { UseAuth } from '@shared/decorators/auth.decorator';
 import { Product } from '@shared/entities/product.entity';
 import { instanceToInstance } from 'class-transformer';
 import { GetProductUseCase } from './getProduct.useCase';
@@ -28,13 +20,10 @@ export class GetProductController {
   constructor(private getProductUseCase: GetProductUseCase) {}
   private readonly logger = new Logger(GetProductController.name);
 
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
+  @UseAuth()
   @HttpCode(HttpStatus.OK)
-  @ApiCookieAuth()
   @ApiOkResponse({ description: 'Success', type: Product })
-  @ApiUnauthorizedResponse({ description: 'Token invalid or not found' })
-  @ApiForbiddenResponse({ description: 'Token not authorized' })
   @ApiNotFoundResponse({ description: 'Product not found' })
   async get(@Request() req, @Param('id') id: string) {
     if (!req.user.isAdmin) {
@@ -47,13 +36,10 @@ export class GetProductController {
     return instanceToInstance(product);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
+  @UseAuth()
   @HttpCode(HttpStatus.OK)
-  @ApiCookieAuth()
   @ApiOkResponse({ description: 'Success', type: Product })
-  @ApiUnauthorizedResponse({ description: 'Token invalid or not found' })
-  @ApiForbiddenResponse({ description: 'Token not authorized' })
   @ApiNotFoundResponse({ description: 'Product not found' })
   async getAll(@Request() req) {
     if (!req.user.isAdmin) {

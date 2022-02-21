@@ -1,4 +1,3 @@
-import { JwtAuthGuard } from '@modules/auth/jwt.guard';
 import {
   Controller,
   Delete,
@@ -6,18 +5,15 @@ import {
   HttpStatus,
   Logger,
   Param,
-  UseGuards,
   Request,
   ForbiddenException,
 } from '@nestjs/common';
 import {
-  ApiCookieAuth,
-  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiTags,
-  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { UseAuth } from '@shared/decorators/auth.decorator';
 import { DeleteUserUseCase } from './deleteUser.useCase';
 
 @ApiTags('Users')
@@ -26,12 +22,9 @@ export class DeleteUserController {
   constructor(private deleteUserUseCase: DeleteUserUseCase) {}
   private readonly logger = new Logger(DeleteUserController.name);
 
-  @UseGuards(JwtAuthGuard)
   @Delete(':id')
+  @UseAuth()
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiCookieAuth()
-  @ApiUnauthorizedResponse({ description: 'Token invalid or not found' })
-  @ApiForbiddenResponse({ description: 'Token not authorized' })
   @ApiNoContentResponse({ description: 'Deleted successfully' })
   @ApiNotFoundResponse({ description: 'User not found' })
   async delete(@Param('id') id: string, @Request() req) {

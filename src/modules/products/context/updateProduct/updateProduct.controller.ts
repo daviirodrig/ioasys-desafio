@@ -1,4 +1,3 @@
-import { JwtAuthGuard } from '@modules/auth/jwt.guard';
 import {
   Body,
   Controller,
@@ -6,19 +5,12 @@ import {
   HttpStatus,
   Param,
   Patch,
-  UseGuards,
   Request,
   ForbiddenException,
   Logger,
 } from '@nestjs/common';
-import {
-  ApiCookieAuth,
-  ApiForbiddenResponse,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiTags,
-  ApiUnauthorizedResponse,
-} from '@nestjs/swagger';
+import { ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { UseAuth } from '@shared/decorators/auth.decorator';
 import { UpdateProductRequestBodyDTO } from '@shared/dtos/product/updateProductRequestBody.dto';
 import { instanceToInstance } from 'class-transformer';
 import { UpdateProductUseCase } from './updateProduct.useCase';
@@ -30,12 +22,9 @@ export class UpdateProductController {
 
   private readonly logger = new Logger(UpdateProductController.name);
 
-  @UseGuards(JwtAuthGuard)
   @Patch(':id')
+  @UseAuth()
   @HttpCode(HttpStatus.OK)
-  @ApiCookieAuth()
-  @ApiUnauthorizedResponse({ description: 'Token invalid or not found' })
-  @ApiForbiddenResponse({ description: 'Token not authorized' })
   @ApiOkResponse({
     description: 'Successfully updated',
   })

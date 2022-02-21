@@ -1,20 +1,13 @@
-import { JwtAuthGuard } from '@modules/auth/jwt.guard';
 import {
   Body,
   Controller,
   Logger,
   Post,
-  UseGuards,
   Request,
   ForbiddenException,
 } from '@nestjs/common';
-import {
-  ApiCookieAuth,
-  ApiCreatedResponse,
-  ApiForbiddenResponse,
-  ApiTags,
-  ApiUnauthorizedResponse,
-} from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { UseAuth } from '@shared/decorators/auth.decorator';
 import { CreateProductRequestBodyDTO } from '@shared/dtos/product/createProductRequestBody.dto';
 import { Product } from '@shared/entities/product.entity';
 import { instanceToInstance } from 'class-transformer';
@@ -27,11 +20,8 @@ export class CreateProductController {
 
   private readonly logger = new Logger(CreateProductController.name);
 
-  @UseGuards(JwtAuthGuard)
   @Post()
-  @ApiCookieAuth()
-  @ApiUnauthorizedResponse({ description: 'Token invalid or not found' })
-  @ApiForbiddenResponse({ description: 'Token not authorized' })
+  @UseAuth()
   @ApiCreatedResponse({
     type: Product,
     description: 'Product created successfully',
