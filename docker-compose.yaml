@@ -15,7 +15,9 @@ services:
     volumes:
       - ./src:/usr/app/src
     ports:
-    - 3000:3000
-    - 9229:9229
+      - 3000:3000
+      - 9229:9229
     env_file:
       - .env
+    environment:
+      - DB_HOST=db
