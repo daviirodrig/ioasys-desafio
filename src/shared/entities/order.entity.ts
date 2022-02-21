@@ -20,13 +20,13 @@ export class Order {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ApiProperty()
-  @ManyToOne(() => User)
+  @ApiProperty({ type: () => User })
+  @ManyToOne(() => User, { cascade: true })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @ApiProperty()
-  @ManyToMany(() => Product)
+  @ApiProperty({ type: () => [Product] })
+  @ManyToMany(() => Product, { cascade: true })
   @JoinTable()
   products: Product[];
 

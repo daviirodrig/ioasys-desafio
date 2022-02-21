@@ -4,6 +4,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CreateOrderController } from './context/createOrder/createOrder.controller';
 import { CreateOrderUseCase } from './context/createOrder/createOrder.useCase';
+import { GetOrderController } from './context/getOrder/getOrder.controller';
+import { GetOrderUseCase } from './context/getOrder/getOrder.useCase';
 import { OrderRepository } from './repository/order.repository';
 
 @Module({
@@ -14,7 +16,7 @@ import { OrderRepository } from './repository/order.repository';
       UserRepository,
     ]),
   ],
-  providers: [CreateOrderUseCase],
-  controllers: [CreateOrderController],
+  providers: [CreateOrderUseCase, GetOrderUseCase],
+  controllers: [CreateOrderController, GetOrderController],
 })
 export class OrdersModule {}
