@@ -25,12 +25,7 @@ export class GetProductController {
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ description: 'Success', type: Product })
   @ApiNotFoundResponse({ description: 'Product not found' })
-  async get(@Request() req, @Param('id') id: string) {
-    if (!req.user.isAdmin) {
-      this.logger.log('Get product failed: not admin');
-      throw new ForbiddenException();
-    }
-
+  async get(@Param('id') id: string) {
     const product = this.getProductUseCase.execute(id);
 
     return instanceToInstance(product);
@@ -41,12 +36,7 @@ export class GetProductController {
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ description: 'Success', type: Product })
   @ApiNotFoundResponse({ description: 'Product not found' })
-  async getAll(@Request() req) {
-    if (!req.user.isAdmin) {
-      this.logger.log('Get product failed: not admin');
-      throw new ForbiddenException();
-    }
-
+  async getAll() {
     const products = this.getProductUseCase.execute();
 
     return instanceToInstance(products);
