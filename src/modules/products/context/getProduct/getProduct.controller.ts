@@ -1,12 +1,10 @@
 import {
   Controller,
-  ForbiddenException,
   Get,
   HttpCode,
   HttpStatus,
   Logger,
   Param,
-  Request,
 } from '@nestjs/common';
 import { ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UseAuth } from '@shared/decorators/auth.decorator';
