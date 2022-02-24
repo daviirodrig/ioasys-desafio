@@ -1,5 +1,14 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString, Min } from 'class-validator';
+import { Sizes } from '@shared/enum/sizes.enum';
+import {
+  ArrayMinSize,
+  IsArray,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Min,
+} from 'class-validator';
 
 export class UpdateProductRequestBodyDTO {
   @ApiPropertyOptional()
@@ -22,4 +31,11 @@ export class UpdateProductRequestBodyDTO {
   @IsNumber()
   @Min(1)
   storage: number;
+
+  @ApiProperty({ isArray: true, enum: Sizes })
+  @IsOptional()
+  @IsArray()
+  @IsEnum(Sizes, { each: true })
+  @ArrayMinSize(1)
+  sizes: Sizes[];
 }

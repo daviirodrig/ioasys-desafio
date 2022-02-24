@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Sizes } from '@shared/enum/sizes.enum';
 import { Exclude } from 'class-transformer';
 import {
   Column,
@@ -38,6 +39,10 @@ export class Product {
   @ApiProperty()
   @Column()
   storage: number;
+
+  @ApiProperty()
+  @Column('text', { array: true })
+  sizes: Sizes[];
 
   @CreateDateColumn({ name: 'created_at' })
   @Exclude()

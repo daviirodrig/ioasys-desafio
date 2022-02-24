@@ -1,5 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsOptional, Min } from 'class-validator';
+import { Sizes } from '@shared/enum/sizes.enum';
+import {
+  ArrayMinSize,
+  IsArray,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  Min,
+} from 'class-validator';
 
 export class CreateProductRequestBodyDTO {
   @ApiProperty()
@@ -21,4 +30,11 @@ export class CreateProductRequestBodyDTO {
   @IsNumber()
   @Min(1)
   storage: number;
+
+  @ApiProperty({ isArray: true, enum: Sizes })
+  @IsNotEmpty()
+  @IsArray()
+  @IsEnum(Sizes, { each: true })
+  @ArrayMinSize(1)
+  sizes: Sizes[];
 }
