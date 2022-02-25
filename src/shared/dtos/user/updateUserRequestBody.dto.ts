@@ -3,7 +3,7 @@ import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
 
 export class UpdateUserRequestBodyDTO {
   @ApiPropertyOptional()
-  @IsEmail({ skipUndefinedProperties: true })
+  @IsEmail()
   @IsOptional()
   email: string;
 
