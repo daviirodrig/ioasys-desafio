@@ -1,3 +1,4 @@
+import { Sizes } from '@shared/enum/sizes.enum';
 import * as bcrypt from 'bcryptjs';
 import { randomUUID } from 'crypto';
 
@@ -28,6 +29,7 @@ export const products = [
     description: 'Descrição bolsa',
     price: Math.round(Math.random() * 100) + 1,
     storage: Math.round(Math.random() * 100) + 1,
+    sizes: [Sizes['P'], Sizes['M'], Sizes['G']],
   },
   {
     admin_id: adminId,
@@ -35,6 +37,7 @@ export const products = [
     description: 'Descrição blusa',
     price: Math.round(Math.random() * 100) + 1,
     storage: Math.round(Math.random() * 100) + 1,
+    sizes: [Sizes['PP'], Sizes['P'], Sizes['M'], Sizes['G']],
   },
   {
     admin_id: adminId,
@@ -42,6 +45,7 @@ export const products = [
     description: 'Descrição Camiseta',
     price: Math.round(Math.random() * 100) + 1,
     storage: Math.round(Math.random() * 100) + 1,
+    sizes: [Sizes['P'], Sizes['M'], Sizes['G'], Sizes['GG']],
   },
   {
     admin_id: adminId,
@@ -49,6 +53,7 @@ export const products = [
     description: 'Descrição Moletom',
     price: Math.round(Math.random() * 100) + 1,
     storage: Math.round(Math.random() * 100) + 1,
+    sizes: [Sizes['P'], Sizes['M'], Sizes['G']],
   },
   {
     admin_id: adminId,
@@ -56,6 +61,7 @@ export const products = [
     description: 'Descrição Calça',
     price: Math.round(Math.random() * 100) + 1,
     storage: Math.round(Math.random() * 100) + 1,
+    sizes: [Sizes['P'], Sizes['M'], Sizes['G']],
   },
   {
     admin_id: adminId,
@@ -63,5 +69,6 @@ export const products = [
     description: 'Descrição Tênis',
     price: Math.round(Math.random() * 100) + 1,
     storage: Math.round(Math.random() * 100) + 1,
+    sizes: [Sizes['P'], Sizes['M'], Sizes['G']],
   },
 ];
