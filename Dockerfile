@@ -8,4 +8,4 @@ RUN yarn install
 
 COPY . .
 
-CMD [ "yarn", "start:debug" ]
+ENTRYPOINT [ "yarn", "start" ]
