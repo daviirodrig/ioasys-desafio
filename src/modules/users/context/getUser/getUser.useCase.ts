@@ -14,7 +14,7 @@ export class GetUserUseCase {
 
     if (!user) {
       this.logger.log(`Get user failed: ${id} does not exists`);
-      throw new NotFoundException(`Get user failed: ${id} does not exists`);
+      throw new NotFoundException(`${id} does not exists`);
     }
 
     return user;

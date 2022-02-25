@@ -19,7 +19,7 @@ export class UpdateProductUseCase {
 
     if (!product) {
       this.logger.log(`Update failed: ${id} does not exist`);
-      throw new NotFoundException(`Update failed: ${id} does not exist`);
+      throw new NotFoundException(`${id} does not exist`);
     }
 
     await this.productRepo.updateProduct(id, updateProductRequestBodyDTO);

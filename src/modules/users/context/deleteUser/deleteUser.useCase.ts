@@ -14,7 +14,7 @@ export class DeleteUserUseCase {
 
     if (!savedUser) {
       this.logger.log(`Delete failed: ${id} does not exists`);
-      throw new NotFoundException(`Delete failed: ${id} does not exists`);
+      throw new NotFoundException(`${id} does not exists`);
     }
 
     await this.userRepo.deleteUser(id);

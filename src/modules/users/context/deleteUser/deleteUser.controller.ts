@@ -32,7 +32,7 @@ export class DeleteUserController {
 
     if (req.user.id != id) {
       this.logger.log('Delete failed: token user does not match');
-      throw new ForbiddenException('Delete failed: token user does not match');
+      throw new ForbiddenException('token user does not match');
     }
 
     await this.deleteUserUseCase.execute(id);

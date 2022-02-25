@@ -39,7 +39,7 @@ export class UpdateUserController {
 
     if (req.user.id != id) {
       this.logger.log('Update failed: token user does not match');
-      throw new ForbiddenException('Update failed: token user does not match');
+      throw new ForbiddenException('token user does not match');
     }
 
     const user = await this.updateUserUseCase.execute(

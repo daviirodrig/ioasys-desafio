@@ -23,7 +23,7 @@ export class CreateUserUseCase {
 
     if (savedUser) {
       this.logger.log(`Creation failed: ${email} already exists`);
-      throw new ConflictException(`Creation failed: ${email} already exists`);
+      throw new ConflictException(`${email} already exists`);
     }
 
     const hashedPass = this.encryption.createHash(password);

@@ -21,7 +21,7 @@ export class UpdateUserUseCase {
 
     if (!savedUser) {
       this.logger.log(`Update failed: ${id} does not exists`);
-      throw new NotFoundException(`Update failed: ${id} does not exists`);
+      throw new NotFoundException(`${id} does not exists`);
     }
 
     if (password) {

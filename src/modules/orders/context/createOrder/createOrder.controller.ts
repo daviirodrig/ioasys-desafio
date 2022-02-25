@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Request } from '@nestjs/common';
+import { Body, Controller, Logger, Post, Request } from '@nestjs/common';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { UseAuth } from '@shared/decorators/auth.decorator';
 import { CreateOrderRequestBodyDTO } from '@shared/dtos/order/createOrderRequestBody.dto';
@@ -10,6 +10,7 @@ import { CreateOrderUseCase } from './createOrder.useCase';
 @Controller('orders')
 export class CreateOrderController {
   constructor(private createOrderUseCase: CreateOrderUseCase) {}
+  private readonly logger = new Logger(CreateOrderController.name);
 
   @Post()
   @UseAuth()
@@ -21,6 +22,8 @@ export class CreateOrderController {
     @Body() createOrderRequestBodyDTO: CreateOrderRequestBodyDTO,
     @Request() req,
   ) {
+    this.logger.log('Received POST /orders');
+
     const order = await this.createOrderUseCase.execute(
       req.user.id,
       createOrderRequestBodyDTO.products,
