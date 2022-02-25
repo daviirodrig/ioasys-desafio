@@ -39,4 +39,11 @@ Gere registros para o banco de dados
 yarn generate
 ```
 
-Teste os endpoints pelo Swagger em `localhost:3000/api/docs`
+Teste os endpoints pelo Swagger em `http://localhost:3000/api/docs`
+
+## Notas
+
+A autenticação é feita por cookies JWT http-only.
+Por limitações do browser o swagger não funciona bem com cookies, recomendo utilizar insomnia ou postman, importando pelo json em `http://localhost:3000/api/docs-json`
+
+Autenticação por cookies http-only mitiga ataques XSS mas abre a possibilidade de CSRF, para contornar isso, a rota root (`http://localhost:3000/`) simula um render da página e retorna o token csrf para ser utilizado no header `CSRF-Token`.
