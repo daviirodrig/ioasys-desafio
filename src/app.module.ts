@@ -15,7 +15,7 @@ import { RootModule } from '@modules/root/root.module';
     ProductsModule,
     AdminsModule,
     OrdersModule,
-    RootModule
+    RootModule,
   ],
   controllers: [],
   providers: [],
